@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <title>Document</title>
+</head>
+<body>
+
+ <p> 
+  Word: <input class='word'>
+  </br>
+  Score: <input class='score'>
+  </br>
+  <button class='submit'>Submit</button>
+ </p>
+
+ <p>
+   <textarea  cols=40 rows=5 class='textinput'></textarea>
+   <button class='submit-analyze'>Analyze</button>
+ </p>
+
+ <div class='result'></div>
+
+   <script>
+    $.getJSON('/all', (result) => {
+      $.each(result, (i, field) => {
+        console.log(i, field);
+      })
+    });
+
+    $('.submit-analyze').click(() => {
+      var txt = $('.textinput').val();
+      var data = {
+        text: txt
+      }
+      $.ajax({
+        url: 'analyze/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data)
+      });
+    });
+
+    $('.submit').click(() => {
+      var word = $('.word').val();
+      var score = $('.score').val();
+      $.ajax('add/' + word + '/' + score);
+    })
+  </script>
+</body>
+</html>
